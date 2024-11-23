@@ -1,0 +1,54 @@
+plugins {
+	id 'java'
+	id 'war'
+	id 'org.springframework.boot' version '2.7.14'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(8)
+	}
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation group: 'org.telegram', name: 'telegrambots-spring-boot-starter', version: '6.8.0'
+//	implementation 'org.telegram:telegrambots:6.8.0'
+
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.6.6' //teze
+	implementation 'org.hibernate:hibernate-validator:7.0.4.Final'   //teze
+
+	implementation 'org.springframework:spring-context'
+	implementation 'org.springdoc:springdoc-openapi-ui:1.6.15'
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+//	implementation 'org.springframework.boot:spring-boot-starter-data-jpa' //kohne
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	compileOnly 'org.projectlombok:lombok'
+	implementation 'mysql:mysql-connector-java:5.1.22' //teze
+//	implementation 'mysql:mysql-connector-java:8.0.29' //kohne
+
+	annotationProcessor 'org.projectlombok:lombok'
+	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
