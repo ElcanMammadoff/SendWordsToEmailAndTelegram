@@ -128,6 +128,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 }
                 sendMessage(chatId, text.toString());
                 telegramMessageLogServiceInter.saveLog(chatId, text.toString(), 2, 0);
+
             }else if(type==1){
                 for (int i = 0; i < 1; i++) {
                     Word word = words.get(i);

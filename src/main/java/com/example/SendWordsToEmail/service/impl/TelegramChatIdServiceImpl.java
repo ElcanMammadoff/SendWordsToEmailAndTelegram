@@ -33,8 +33,9 @@ public class TelegramChatIdServiceImpl implements TelegramChatIdServiceInter {
 
     @Override
     public void processWordsForType(TelegramChatId telegramChatId, Integer type) {
-        int finalSerialNumber = wordRepository.findAllByType(type).size();
-        LastText lastText = lastTextServiceInter.getOrCreateLastText(telegramChatId, type);
+        try {
+            int finalSerialNumber = wordRepository.findAllByType(type).size();
+            LastText lastText = lastTextServiceInter.getOrCreateLastText(telegramChatId, type);
             if (type == 0) {
                 if (lastText == null) {
                     return; // No last text entry found, skip this type.
@@ -69,6 +70,9 @@ public class TelegramChatIdServiceImpl implements TelegramChatIdServiceInter {
                 sendMessageToTelegram(telegramChatId, textMessage);
                 lastTextServiceInter.updateLastTextIdiom(lastText, serialNumber);
             }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         }
 
     @Override
@@ -108,16 +112,12 @@ public class TelegramChatIdServiceImpl implements TelegramChatIdServiceInter {
     @Override
     public String buildTextMessageForNextWordsIdiom(int serialNumber, Integer type) {
         StringBuilder textMessage = new StringBuilder();
-
         for (int i = serialNumber + 1; i <= serialNumber +1; i++) {
             Word word = wordRepository.findBySerialNumberAndType(i, type);
             textMessage.append(word.getText()).append("---").append(word.getDefination()).append("\n\n");
         }
-
         return textMessage.toString();
     }
-
-
 
     @Override
     public void sendMessageToTelegram(TelegramChatId telegramChatId, String textMessage) {

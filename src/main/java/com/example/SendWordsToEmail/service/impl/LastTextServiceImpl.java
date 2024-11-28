@@ -74,18 +74,34 @@ public class LastTextServiceImpl implements LastTextServiceInter {
 
     @Override
     public LastText getOrCreateLastText(TelegramChatId telegramChatId, Integer type) {
-        LastText lastText = lastTextRepository.findByTelegramChatIdAndType(telegramChatId, type);
+        try {
+            LastText lastText = lastTextRepository.findByTelegramChatIdAndType(telegramChatId, type);
+          if (type==0) {
+              if (lastText == null) {
+                  lastText = new LastText();
+                  lastText.setTelegramChatId(telegramChatId);
+                  lastText.setType(type);
+                  lastText.setLastSerialNumber(5);
+                  lastText.setStatus(1);
+                  lastTextRepository.save(lastText);
+              }
 
-        if (lastText == null) {
-            lastText = new LastText();
-            lastText.setTelegramChatId(telegramChatId);
-            lastText.setType(type);
-            lastText.setLastSerialNumber(5);
-            lastText.setStatus(1);
-            lastTextRepository.save(lastText);
+              return lastTextRepository.findByTelegramChatIdAndTypeAndStatus(telegramChatId, type, 1);
+          }else if (type==1){
+              if (lastText == null) {
+                  lastText = new LastText();
+                  lastText.setTelegramChatId(telegramChatId);
+                  lastText.setType(type);
+                  lastText.setLastSerialNumber(1);
+                  lastText.setStatus(1);
+                  lastTextRepository.save(lastText);
+              }
+              return lastTextRepository.findByTelegramChatIdAndTypeAndStatus(telegramChatId, type, 1);
+          }
+        }catch (Exception e){
+            e.printStackTrace();
         }
-
-        return lastTextRepository.findByTelegramChatIdAndTypeAndStatus(telegramChatId, type, 1);
+        return null; //bunu deyisdim.
     }
 
     @Override
