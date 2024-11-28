@@ -35,14 +35,14 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotUsername() {
-//        return "WordIdiBot";
-       return "Words_and_idioms_bystep_bot";
+        return "WordIdiBot";
+//        return "wordddtestbot";
     }
 
     @Override
     public String getBotToken() {
-//        return "7969280130:AAHZBNWnhE7WIftdZyIzMYKgfXd9DBrDQBg";
-        return "7030762864:AAFp8Pb8nZinv11fesBSBwtCNxbzl-te2PU";
+        return "7969280130:AAHZBNWnhE7WIftdZyIzMYKgfXd9DBrDQBg";
+//        return "7940390768:AAHV46KLa-OaEuazwdZF6_kg72UKBQdMckU";
     }
 
     @Override
@@ -58,31 +58,33 @@ public class TelegramBot extends TelegramLongPollingBot {
 
             if ("/start".equals(text)) {
                 TelegramChatId telegramChatId = telegramChatIdRepository.findByChatId(chatId);
-
-                Boolean finish = lastTextServiceInter.checkIfAllOfMaterialsFinishedTelegram(types, telegramChatId, lastTextRepository, telegramChatIdRepository);
-                if (finish) {
-                    sendMessage(chatId, "Siz artıq bütün proqramı öyrənib bitirmisiniz.");
-                } else {
-                    if (telegramChatId != null) {
-                        if(telegramChatId.getStatus()==0) {
-                            telegramChatId.setStatus(1);
-                            telegramChatIdRepository.save(telegramChatId);
-                            sendMessage(chatId, "Sizi yenidən xoş gördük, Bu gündən etibarən qaldığımız yerdən davam edəcəyik");
-                        }else{
-                            sendMessage(chatId,"siz  hal hazirda proqramdan istifade edirsiz");
-                        }
+                if (telegramChatId != null) {
+                    System.out.println(telegramChatId.getChatId());
+                    Boolean finish = lastTextServiceInter.checkIfAllOfMaterialsFinishedTelegram(types, telegramChatId, lastTextRepository, telegramChatIdRepository);
+                    if (finish) {
+                        sendMessage(chatId, "Siz artıq bütün proqramı öyrənib bitirmisiniz.");
                     } else {
-                        TelegramChatId telegramChatId1 = new TelegramChatId();
-                        telegramChatId1.setChatId(chatId);
-                        telegramChatId1.setCreated(new Date());
-                        telegramChatId1.setStatus(1);
-                        telegramChatIdRepository.save(telegramChatId1);
-                        sendMessage(chatId, "Xoş gəldiniz!\n\nBu gündən etibarən sizə hər gün 5 söz və 1 idiom göndərəcəyik.\n\nDigər istifadəçilərin bu sözlərə və idiomlara uyğun yazdığı cümlələri görmək üçün aşağıdakı nümunəyə uyğun şəkildə sözü cümlədə işləyədərək bizə göndərə bilərsiniz.\n\nNümunə:\n" +
-                                "Car-I have a car");
-                        sendMessageToTelegram(chatId);
+
+                            if (telegramChatId.getStatus() == 0) {
+                                telegramChatId.setStatus(1);
+                                telegramChatIdRepository.save(telegramChatId);
+                                sendMessage(chatId, "Sizi yenidən xoş gördük, Bu gündən etibarən qaldığımız yerdən davam edəcəyik");
+                            } else {
+                                sendMessage(chatId, "siz  hal hazirda proqramdan istifade edirsiz");
+                            }
                     }
                 }
-            } else if ("/stop".equals(text)) {
+                else{
+                    TelegramChatId telegramChatId1 = new TelegramChatId();
+                    telegramChatId1.setChatId(chatId);
+                    telegramChatId1.setCreated(new Date());
+                    telegramChatId1.setStatus(1);
+                    telegramChatIdRepository.save(telegramChatId1);
+                    sendMessage(chatId, "Xoş gəldiniz!\n\nBu gündən etibarən sizə hər gün 5 söz və 1 idiom göndərəcəyik.\n\nDigər istifadəçilərin bu sözlərə və idiomlara uyğun yazdığı cümlələri görmək üçün aşağıdakı nümunəyə uyğun şəkildə sözü cümlədə işləyədərək bizə göndərə bilərsiniz.\n\nNümunə:\n" +
+                            "Car-I have a car");
+                    sendMessageToTelegram(chatId);
+                }
+            }else if ("/stop".equals(text)) {
                 sendMessage(chatId, "Siz proqramı dayandırdınız, bu gündən etibarən sizə materiallar göndərilməyəcək.");
                 TelegramChatId telegramChatId = telegramChatIdRepository.findByChatId(chatId);
                 telegramChatId.setStatus(0);
@@ -102,7 +104,14 @@ public class TelegramBot extends TelegramLongPollingBot {
         try {
             execute(sendMessage);
         } catch (TelegramApiException e) {
-            e.printStackTrace();
+            if (e.getMessage().contains("403")) {
+                System.out.println("user with chat id: "+chatId+" botu bloklayib");
+                TelegramChatId telegramChatId=telegramChatIdRepository.findByChatId(chatId);
+                telegramChatId.setStatus(0);
+                telegramChatIdRepository.save(telegramChatId);
+            }else{
+                System.out.println("sendMessage methodunda bir xeta cixdi.");
+            }
         }
     }
 
@@ -134,10 +143,10 @@ public class TelegramBot extends TelegramLongPollingBot {
     public void foo(String chatId, String sentence) {
 
         if (sentence.contains("-")) {
-            String wordOfSentence= Arrays.stream(sentence.split("-")).collect(Collectors.toList()).get(0).toString().trim();
+            String wordOfSentence= Arrays.stream(sentence.split("-")).collect(Collectors.toList()).get(0).trim();
             String word=wordOfSentence+"-";
 //            String sentenceWithoutMainWord=Arrays.stream(sentence.split("-")).collect(Collectors.toList()).get(1).toString().replaceAll("\\s+", " ");
-            String readySentence=word+Arrays.stream(sentence.split("-")).collect(Collectors.toList()).get(1).toString().replaceAll("\\s+", " ");
+            String readySentence=word+Arrays.stream(sentence.split("-")).collect(Collectors.toList()).get(1).replaceAll("\\s+", " ");
 
             Optional<List<Word>> words = wordRepository.findAllByTextStartingWith(wordOfSentence);
             int countOfWordsInSentence=readySentence.split(" ").length;
@@ -165,7 +174,5 @@ public class TelegramBot extends TelegramLongPollingBot {
             telegramMessageLogServiceInter.saveLog(chatId, sentence, 1, 0);
         }
     }
-
-
 }
 

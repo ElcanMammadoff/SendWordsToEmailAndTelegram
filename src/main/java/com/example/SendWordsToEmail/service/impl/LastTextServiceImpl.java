@@ -89,8 +89,15 @@ public class LastTextServiceImpl implements LastTextServiceInter {
     }
 
     @Override
-    public void updateLastText(LastText lastText, int serialNumber) {
+    public void updateLastTextWord(LastText lastText, int serialNumber) {
         lastText.setLastSerialNumber(serialNumber + 5);
+        lastTextRepository.saveAndFlush(lastText);
+        entityManager.detach(lastText);
+    }
+
+    @Override
+    public void updateLastTextIdiom(LastText lastText, int serialNumber) {
+        lastText.setLastSerialNumber(serialNumber + 1);
         lastTextRepository.saveAndFlush(lastText);
         entityManager.detach(lastText);
     }

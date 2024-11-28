@@ -50,7 +50,7 @@ public class TelegramChatIdServiceImpl implements TelegramChatIdServiceInter {
                 // Send next 5 words
                 String textMessage = buildTextMessageForNextWords(serialNumber, type);
                 sendMessageToTelegram(telegramChatId, textMessage);
-                lastTextServiceInter.updateLastText(lastText, serialNumber);
+                lastTextServiceInter.updateLastTextWord(lastText, serialNumber);
             } else if (type == 1) {
                 if (lastText == null) {
                     return; // No last text entry found, skip this type.
@@ -67,7 +67,7 @@ public class TelegramChatIdServiceImpl implements TelegramChatIdServiceInter {
                 // Send next 1 Idiom
                 String textMessage = buildTextMessageForNextWordsIdiom(serialNumber, type);
                 sendMessageToTelegram(telegramChatId, textMessage);
-                lastTextServiceInter.updateLastText(lastText, serialNumber);
+                lastTextServiceInter.updateLastTextIdiom(lastText, serialNumber);
             }
         }
 

@@ -20,5 +20,6 @@ public interface LastTextServiceInter {
 
        LastText getOrCreateLastText(TelegramChatId telegramChatId, Integer type);
 
-     void updateLastText(LastText lastText, int serialNumber);
+     void updateLastTextWord(LastText lastText, int serialNumber);
+     void updateLastTextIdiom(LastText lastText, int serialNumber);
 }

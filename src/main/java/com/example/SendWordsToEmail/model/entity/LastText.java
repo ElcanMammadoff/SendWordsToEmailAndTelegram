@@ -21,9 +21,7 @@ public class LastText {
     @ManyToOne
     @JoinColumn(name="telegramChatId_id",referencedColumnName = "id")
     private TelegramChatId telegramChatId;
-
     private int lastSerialNumber;
-
     private int type;
     private int status;
 
