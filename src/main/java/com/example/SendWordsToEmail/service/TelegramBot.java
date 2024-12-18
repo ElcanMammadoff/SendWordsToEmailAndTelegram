@@ -17,11 +17,10 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import java.util.Arrays;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -35,14 +34,12 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotUsername() {
-        return "WordIdiBot";
-//        return "wordddtestbot";
+        return "Bot-username";
     }
 
     @Override
     public String getBotToken() {
-        return "7969280130:AAHZBNWnhE7WIftdZyIzMYKgfXd9DBrDQBg";
-//        return "7940390768:AAHV46KLa-OaEuazwdZF6_kg72UKBQdMckU";
+        return "Bot-Token";
     }
 
     @Override
@@ -65,16 +62,15 @@ public class TelegramBot extends TelegramLongPollingBot {
                         sendMessage(chatId, "Siz artıq bütün proqramı öyrənib bitirmisiniz.");
                     } else {
 
-                            if (telegramChatId.getStatus() == 0) {
-                                telegramChatId.setStatus(1);
-                                telegramChatIdRepository.save(telegramChatId);
-                                sendMessage(chatId, "Sizi yenidən xoş gördük, Bu gündən etibarən qaldığımız yerdən davam edəcəyik");
-                            } else {
-                                sendMessage(chatId, "siz  hal hazirda proqramdan istifade edirsiz");
-                            }
+                        if (telegramChatId.getStatus() == 0) {
+                            telegramChatId.setStatus(1);
+                            telegramChatIdRepository.save(telegramChatId);
+                            sendMessage(chatId, "Sizi yenidən xoş gördük, Bu gündən etibarən qaldığımız yerdən davam edəcəyik.");
+                        } else {
+                            sendMessage(chatId, "Siz hal-hazırda proqramdan istifadə edirsiniz.");
+                        }
                     }
-                }
-                else{
+                } else {
                     TelegramChatId telegramChatId1 = new TelegramChatId();
                     telegramChatId1.setChatId(chatId);
                     telegramChatId1.setCreated(new Date());
@@ -84,7 +80,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                             "Car-I have a car");
                     sendMessageToTelegram(chatId);
                 }
-            }else if ("/stop".equals(text)) {
+            } else if ("/stop".equals(text)) {
                 sendMessage(chatId, "Siz proqramı dayandırdınız, bu gündən etibarən sizə materiallar göndərilməyəcək.");
                 TelegramChatId telegramChatId = telegramChatIdRepository.findByChatId(chatId);
                 telegramChatId.setStatus(0);
@@ -105,11 +101,11 @@ public class TelegramBot extends TelegramLongPollingBot {
             execute(sendMessage);
         } catch (TelegramApiException e) {
             if (e.getMessage().contains("403")) {
-                System.out.println("user with chat id: "+chatId+" botu bloklayib");
-                TelegramChatId telegramChatId=telegramChatIdRepository.findByChatId(chatId);
+                System.out.println("user with chat id: " + chatId + " botu bloklayib");
+                TelegramChatId telegramChatId = telegramChatIdRepository.findByChatId(chatId);
                 telegramChatId.setStatus(0);
                 telegramChatIdRepository.save(telegramChatId);
-            }else{
+            } else {
                 System.out.println("sendMessage methodunda bir xeta cixdi.");
             }
         }
@@ -121,7 +117,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         for (int type : types) {
             List<Word> words = wordRepository.findAllByType(type);
             StringBuilder text = new StringBuilder();
-            if(type==0) {
+            if (type == 0) {
                 for (int i = 0; i < 5; i++) {
                     Word word = words.get(i);
                     text.append(word.getText()).append("---").append(word.getDefination()).append("\n\n");
@@ -129,7 +125,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 sendMessage(chatId, text.toString());
                 telegramMessageLogServiceInter.saveLog(chatId, text.toString(), 2, 0);
 
-            }else if(type==1){
+            } else if (type == 1) {
                 for (int i = 0; i < 1; i++) {
                     Word word = words.get(i);
                     text.append(word.getText()).append("---").append(word.getDefination()).append("\n\n");
@@ -143,36 +139,48 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     public void foo(String chatId, String sentence) {
 
-        if (sentence.contains("-")) {
-            String wordOfSentence= Arrays.stream(sentence.split("-")).collect(Collectors.toList()).get(0).trim();
-            String word=wordOfSentence+"-";
-//            String sentenceWithoutMainWord=Arrays.stream(sentence.split("-")).collect(Collectors.toList()).get(1).toString().replaceAll("\\s+", " ");
-            String readySentence=word+Arrays.stream(sentence.split("-")).collect(Collectors.toList()).get(1).replaceAll("\\s+", " ");
+        try {
 
-            Optional<List<Word>> words = wordRepository.findAllByTextStartingWith(wordOfSentence);
-            int countOfWordsInSentence=readySentence.split(" ").length;
+            if (sentence.contains("-")) {
 
-            if (!words.isPresent()) {
-                telegramMessageLogServiceInter.saveLog(chatId, readySentence, 1, 0);
-            } else if(words.isPresent() && countOfWordsInSentence>2){
-                telegramMessageLogServiceInter.saveLog(chatId, readySentence, 1, 1);
-                Optional<List<TelegramMessageLog>> sentenceList = telegramMessageLogRepository.findAllByTextStartingWithAndIsSentence(word, 1);
-                if (sentenceList.get().size() > 0) {
-                    StringBuilder message = new StringBuilder();
-                    for (TelegramMessageLog sentence1 : sentenceList.get()) {
-                        String sentence1Text = sentence1.getText();
-                        message.append(sentence1Text).append("\n\n");
+                String sentenceWithouthyphen = sentence.trim().replaceAll("-+", "-").trim().replaceAll("\\s+", " ");
+                int dashIndex = sentenceWithouthyphen.indexOf('-');
+                int length = sentence.length();
+                String wordOfSentence = sentence.substring(0, dashIndex).trim();
+                String word = wordOfSentence;  //burda - var idi
+                String extraSentence = sentenceWithouthyphen.substring(dashIndex + 1, length).trim();
+                String readySentence = word + "-" + extraSentence;
+
+
+                Optional<List<Word>> words = wordRepository.findAllByTextStartingWith(wordOfSentence);
+                int countOfWordsInSentence = extraSentence.split(" ").length;
+
+
+                if (!words.isPresent()) {
+                    telegramMessageLogServiceInter.saveLog(chatId, readySentence, 1, 3); // Cümlədə uyğun söz yoxdursa
+                } else if (countOfWordsInSentence < 3) {
+                    telegramMessageLogServiceInter.saveLog(chatId, readySentence, 1, 2);
+                    sendMessage(chatId, "Qurduğunuz cümlə ən azı üç sözdən ibarət olmalıdır.");
+                } else {
+                    // Yalnız düzgün cümlə və uyğun söz varsa
+                    telegramMessageLogServiceInter.saveLog(chatId, readySentence, 1, 1);
+                    Optional<List<TelegramMessageLog>> sentenceList = telegramMessageLogRepository.findAllByTextStartingWithAndIsSentence(word, 1);
+                    if (sentenceList.isPresent() && !sentenceList.get().isEmpty()) {
+                        StringBuilder message = new StringBuilder();
+                        for (TelegramMessageLog sentence1 : sentenceList.get()) {
+                            message.append(sentence1.getText()).append("\n\n");
+                        }
+                        sendMessage(chatId, message.toString());
                     }
-                    sendMessage(chatId, message.toString());
                 }
-            }else{
-                telegramMessageLogServiceInter.saveLog(chatId, readySentence, 1, 0);
-                sendMessage(chatId,"zehmet olmasa soz sayina ve ya cumlenin strukturuna diqqet edin");
+            } else {
+                telegramMessageLogServiceInter.saveLog(chatId, sentence, 1, 0); // Cümlə strukturuna uyğun deyilsə
             }
-
-
-        } else {
-            telegramMessageLogServiceInter.saveLog(chatId, sentence, 1, 0);
+        } catch (IndexOutOfBoundsException e) {
+            sendMessage(chatId, "Qurduğunuz cümlə strukturu aşağıdakı nümunədə göstərildiyi kimi olmalıdır. \n" +
+                    "\n" +
+                    "\n" +
+                    "Car-I have a car.");
         }
     }
 }

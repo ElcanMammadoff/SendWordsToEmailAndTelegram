@@ -112,7 +112,6 @@ package com.example.SendWordsToEmail.controller;
 import com.example.SendWordsToEmail.model.entity.TelegramChatId;
 import com.example.SendWordsToEmail.repository.TelegramChatIdRepository;
 import com.example.SendWordsToEmail.service.inter.TelegramChatIdServiceInter;
-import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -142,11 +141,22 @@ public class TelegramChatIdController {
 //    }
 
 
-    @Operation(summary = "Bu metod, istifadəçilərə sözləri və ya ifadələri Telegram vasitəsilə göndərir")
-    @Scheduled(fixedRate = 60*60* 1000) //proqram run olduqda sonra  Hər 1 gunden  bir işə düşəcək
-//    @Scheduled(cron = "0 0 16 * * ?") //her gun saat 20:00 da ise dusecek
-    @Async // Asinxron olaraq işləyəcək
-    @Transactional // Verilənlər bazası əməliyyatları tərtib olunacaq
+//    @Operation(summary = "Bu metod, istifadəçilərə sözləri və ya ifadələri Telegram vasitəsilə göndərir")
+//    @Scheduled(fixedRate = 60*60* 1000) //proqram run olduqda sonra  Hər 1 gunden  bir işə düşəcək
+////    @Scheduled(cron = "0 0 16 * * ?") //her gun saat 20:00 da ise dusecek
+//    @Async // Asinxron olaraq işləyəcək
+//    @Transactional // Verilənlər bazası əməliyyatları tərtib olunacaq
+//    public void sendWordsToChatId() {
+//        List<TelegramChatId> telegramChatIdList = telegramChatIdRepository.findAllByStatus(1);
+//
+//        for (TelegramChatId telegramChatId : telegramChatIdList) {
+//            telegramChatIdServiceInter.sendWordsToUser(telegramChatId);
+//        }
+//    }
+
+    @Scheduled(cron = "0 15 20 * * ?", zone = "Asia/Baku") // 20:15 AZT (Asia/Baku time zone)
+    @Async
+    @Transactional
     public void sendWordsToChatId() {
         List<TelegramChatId> telegramChatIdList = telegramChatIdRepository.findAllByStatus(1);
 

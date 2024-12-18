@@ -79,11 +79,11 @@ public class TelegramChatIdServiceImpl implements TelegramChatIdServiceInter {
     public void notifyUserAboutCompletion(TelegramChatId telegramChatId,int type) {
         try {
             if(type==0){
-                telegramBot.sendMessage(telegramChatId.getChatId(), "Siz  sozleri oyrenib qutardiniz.");
+                telegramBot.sendMessage(telegramChatId.getChatId(), "Siz sözləri öyrənib qurtardınız.");
             }else if(type==1){
-                telegramBot.sendMessage(telegramChatId.getChatId(), "Siz  idiomlari oyrenib qutardiniz.");
+                telegramBot.sendMessage(telegramChatId.getChatId(), "Siz idiomlari öyrənib qurtardınız.");
             }else {
-                telegramBot.sendMessage(telegramChatId.getChatId(), "Siz artıq bütün proqramı öyrənib bitirmisiniz.");
+                telegramBot.sendMessage(telegramChatId.getChatId(), "Siz materialı öyrənib qurtardınız.");
             }
         } catch (Exception e) {
             e.printStackTrace();
