@@ -34,12 +34,17 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotUsername() {
-        return "Bot-username";
+        return "Words_and_idioms_bystep_bot"; //BU ESAS LAHIYENIN BOTUDU.EHTIYYATLI OL!!!!!!!!!!!!
+//        return "WordIdiBot";
+//        return "wordddtestbot";
     }
 
     @Override
     public String getBotToken() {
-        return "Bot-Token";
+        return "7030762864:AAFp8Pb8nZinv11fesBSBwtCNxbzl-te2PU"; //BU ESAS LAHIYENIN TOKENIDI.EHTIYYATLI OL!!!!!!!!!!!!!
+
+//        return "7969280130:AAHZBNWnhE7WIftdZyIzMYKgfXd9DBrDQBg";
+//        return "7940390768:AAHV46KLa-OaEuazwdZF6_kg72UKBQdMckU";
     }
 
     @Override
@@ -174,7 +179,11 @@ public class TelegramBot extends TelegramLongPollingBot {
                     }
                 }
             } else {
-                telegramMessageLogServiceInter.saveLog(chatId, sentence, 1, 0); // Cümlə strukturuna uyğun deyilsə
+                telegramMessageLogServiceInter.saveLog(chatId, sentence, 1, 2); // Cümlə strukturuna uyğun deyilsə
+                sendMessage(chatId, "Qurduğunuz cümlə strukturu aşağıdakı nümunədə göstərildiyi kimi olmalıdır. \n" +
+                        "\n" +
+                        "\n" +
+                        "Car-I have a car.");
             }
         } catch (IndexOutOfBoundsException e) {
             sendMessage(chatId, "Qurduğunuz cümlə strukturu aşağıdakı nümunədə göstərildiyi kimi olmalıdır. \n" +

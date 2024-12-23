@@ -24,7 +24,7 @@ public class TelegramMessageLog {
 
     private int status; //status 1- user mesaj gonderir. status 2- biz gonderdiyimiz mesaj
 
-    private int isSentence;//1 dirse cumleleri saxlayir .2 dirse sehv cumleleri saxlayir. 3 durse  yazdigi esas  soz sozler arasinda yoxdur.
+    private int isSentence;//1 dirse cumleleri saxlayir .2 dirse sehv cumleleri saxlayir. 3 durse  yazdigi esas soz sozler arasinda yoxdur.
 
 
 
