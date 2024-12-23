@@ -34,17 +34,11 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotUsername() {
-        return "Words_and_idioms_bystep_bot"; //BU ESAS LAHIYENIN BOTUDU.EHTIYYATLI OL!!!!!!!!!!!!
-//        return "WordIdiBot";
-//        return "wordddtestbot";
     }
 
     @Override
     public String getBotToken() {
-        return "7030762864:AAFp8Pb8nZinv11fesBSBwtCNxbzl-te2PU"; //BU ESAS LAHIYENIN TOKENIDI.EHTIYYATLI OL!!!!!!!!!!!!!
 
-//        return "7969280130:AAHZBNWnhE7WIftdZyIzMYKgfXd9DBrDQBg";
-//        return "7940390768:AAHV46KLa-OaEuazwdZF6_kg72UKBQdMckU";
     }
 
     @Override
