@@ -29,6 +29,8 @@ public class TelegramChatIdServiceImpl implements TelegramChatIdServiceInter {
         for (Integer type : types) {
             processWordsForType(telegramChatId, type);
         }
+        telegramBot.sendMessage(telegramChatId.getChatId(), "Digər istifadəçilərin bu sözlərə və idiomlara uyğun yazdığı cümlələri görmək üçün aşağıdakı nümunəyə uyğun şəkildə sözü cümlədə işləyədərək bizə göndərə bilərsiniz.\n\nNümunə:\n" +
+                "Car-I have a car");
     }
 
     @Override
