@@ -76,7 +76,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                     telegramChatId1.setCreated(new Date());
                     telegramChatId1.setStatus(1);
                     telegramChatIdRepository.save(telegramChatId1);
-                    sendMessage(chatId, "Xoş gəldiniz!\n\nBu gündən etibarən sizə hər gün 5 söz və 1 idiom göndərəcəyik.\n\nDigər istifadəçilərin bu sözlərə və idiomlara uyğun yazdığı cümlələri görmək üçün aşağıdakı nümunəyə uyğun şəkildə sözü cümlədə işləyədərək bizə göndərə bilərsiniz.\n\nNümunə:\n" +
+                    sendMessage(chatId, "Xoş gəldiniz!\n\nBu gündən etibarən sizə hər gün 5 söz və 1 idiom göndərəcəyik.\n\nDigər istifadəçilərin bu sözlərə və idiomlara uyğun yazdığı cümlələri görmək üçün aşağıdakı nümunəyə uyğun şəkildə sözü cümlədə işlədərək bizə göndərə bilərsiniz.\n\nNümunə:\n" +
                             "Car-I have a car");
                     sendMessageToTelegram(chatId);
                 }
