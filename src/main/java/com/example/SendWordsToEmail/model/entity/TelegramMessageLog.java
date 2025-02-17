@@ -26,6 +26,7 @@ public class TelegramMessageLog {
 
     private int isSentence;//1 dirse cumleleri saxlayir .2 dirse sehv cumleleri saxlayir. 3 durse  yazdigi esas soz sozler arasinda yoxdur.
 
+    private int isAiSentence=0; // 1--->ozumun yazdigim cumlelerdi(istifadeciler yazan deyil,ozum(ai cumleleri) yazmisam ki,cumle cox olsun).  0--->ai ile yazilmis deyil.
 
 
 }

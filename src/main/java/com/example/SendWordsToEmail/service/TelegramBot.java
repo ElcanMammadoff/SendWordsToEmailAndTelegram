@@ -86,7 +86,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 telegramChatId.setStatus(0);
                 telegramChatIdRepository.save(telegramChatId);
             } else {
-                foo(chatId, text);
+                showOthersSentencesToUser(chatId, text);
             }
         }
     }
@@ -137,7 +137,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     }
 
-    public void foo(String chatId, String sentence) {
+    public void showOthersSentencesToUser(String chatId, String sentence) {
 
         try {
 
